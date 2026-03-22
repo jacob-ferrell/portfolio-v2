@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import bugTracker from '../../assets/projectScreenshots/bug-tracker-screenshot2.png';
+  import key2glory from '../../assets/projectScreenshots/key2glory.png';
   import chesstopia from '../../assets/projectScreenshots/chesstopia.gif';
 
   const projects = [
@@ -23,7 +24,7 @@
     {
       name: 'Key2Glory',
       description: 'A typing speed test app with multiple modes — standard words, numbers, and special characters — featuring Auth0 authentication and stats tracking.',
-      image: null,
+      image: key2glory,
       repo: 'https://github.com/jacob-ferrell/key2glory-frontend',
       demo: 'https://key2glory.jacobferrell.net',
       tags: ['React', 'TypeScript', 'Java', 'Spring Boot', 'Auth0'],
