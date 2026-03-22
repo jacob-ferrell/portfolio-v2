@@ -20,7 +20,7 @@
   // New SVGs
   import graphqlImg   from '../../assets/softwareLogos/graphql-plain.svg';
   import flaskImg     from '../../assets/softwareLogos/flask-original.svg';
-  import mysqlImg     from '../../assets/softwareLogos/mysql-original.svg';
+  import hibernateImg from '../../assets/softwareLogos/hibernate-plain.svg';
   import redisImg     from '../../assets/softwareLogos/redis-plain.svg';
   import awsImg       from '../../assets/softwareLogos/aws.svg';
   import k8sImg       from '../../assets/softwareLogos/kubernetes-plain.svg';
@@ -42,6 +42,7 @@
       label: 'Frameworks & Libraries',
       skills: [
         { name: 'Spring Boot', icon: springImg },
+        { name: 'Hibernate',   icon: hibernateImg },
         { name: 'React',       icon: reactImg },
         { name: 'Node.js',     icon: nodeImg },
         { name: 'Express.js',  icon: expressImg,  invertOnLight: true },
@@ -55,7 +56,6 @@
       skills: [
         { name: 'GraphQL',     icon: graphqlImg },
         { name: 'PostgreSQL',  icon: postgresImg },
-        { name: 'MySQL',       icon: mysqlImg },
         { name: 'Redis',       icon: redisImg },
       ],
     },
