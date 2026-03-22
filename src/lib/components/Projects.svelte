@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import bugTracker from '../../assets/projectScreenshots/bug-tracker-screenshot2.png';
-  import cookBook from '../../assets/projectScreenshots/cookbook-screenshot.png';
+  import key2glory from '../../assets/projectScreenshots/key2glory.jpg';
   import chesstopia from '../../assets/projectScreenshots/chesstopia.gif';
 
   const projects = [
@@ -22,12 +22,12 @@
       tags: ['MongoDB', 'Express', 'React', 'Node.js'],
     },
     {
-      name: 'CookBook',
-      description: 'A recipe discovery and sharing app where users can browse, save, and contribute recipes, built with Django.',
-      image: cookBook,
-      repo: 'https://github.com/jacob-ferrell/django-recipe-book',
-      demo: 'https://cookbook.jacob-ferrell.com/',
-      tags: ['Django', 'Python', 'PostgreSQL'],
+      name: 'Key2Glory',
+      description: 'A typing speed test app with multiple modes — standard words, numbers, and special characters — featuring Auth0 authentication and stats tracking.',
+      image: key2glory,
+      repo: 'https://github.com/jacob-ferrell/key2glory-frontend',
+      demo: 'https://key2glory.jacobferrell.net',
+      tags: ['React', 'TypeScript', 'Java', 'Spring Boot', 'Auth0'],
     },
   ];
 
@@ -162,14 +162,17 @@
   .card-image {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 16/9;
+    height: 200px;
     background: var(--surface-alt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .card-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
     transition: transform 0.4s ease;
   }
