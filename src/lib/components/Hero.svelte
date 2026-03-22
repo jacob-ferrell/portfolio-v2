@@ -6,13 +6,8 @@
 
 <section id="home">
   <div class="hero-content">
-    <p class="eyebrow">Hello, I'm</p>
     <h1 class="name">Jacob Ferrell</h1>
-    <p class="title">Full-Stack Web Developer</p>
-    <p class="bio">
-      I build clean, performant web applications with modern technologies.
-      Passionate about great user experiences and elegant code.
-    </p>
+    <p class="title">Backend Software Engineer</p>
     <div class="cta-row">
       <a
         href="https://docs.google.com/document/d/1EjZxIKgkSwgWMlyLXrC8quvW_wmdEaaPp8r1xO8JL68/export?format=pdf"
@@ -64,15 +59,6 @@
     animation: fadeUp 0.7s ease both;
   }
 
-  .eyebrow {
-    color: var(--accent);
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin: 0 0 0.5rem;
-  }
-
   .name {
     font-size: clamp(2.5rem, 7vw, 4.5rem);
     font-weight: 800;
@@ -84,15 +70,8 @@
   .title {
     font-size: clamp(1.1rem, 3vw, 1.5rem);
     color: var(--text-muted);
-    margin: 0 0 1.25rem;
-    font-weight: 400;
-  }
-
-  .bio {
-    color: var(--text-muted);
-    line-height: 1.7;
     margin: 0 0 2rem;
-    max-width: 500px;
+    font-weight: 400;
   }
 
   .cta-row {

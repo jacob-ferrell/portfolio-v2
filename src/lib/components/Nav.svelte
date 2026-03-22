@@ -16,7 +16,7 @@
     document.getElementById(section)?.scrollIntoView({ behavior: 'smooth' });
   }
 
-  const links = ['home', 'skills', 'projects', 'contact'];
+  const links = ['home', 'experience', 'skills', 'projects', 'contact'];
 </script>
 
 <nav>

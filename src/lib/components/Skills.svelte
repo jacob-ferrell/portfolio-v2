@@ -3,16 +3,20 @@
 
   const skillGroups = [
     {
-      label: 'Front End',
-      skills: ['HTML5', 'CSS3', 'JavaScript', 'React', 'Bootstrap', 'Tailwind CSS'],
+      label: 'Languages',
+      skills: ['Java', 'JavaScript', 'Python', 'HTML', 'CSS'],
     },
     {
-      label: 'Back End',
-      skills: ['Node.js', 'Express.js', 'MongoDB', 'Django', 'Python', 'Java', 'Spring', 'PostgreSQL'],
+      label: 'Frameworks & Libraries',
+      skills: ['Spring Boot', 'React', 'Node.js', 'Express.js', 'Django', 'Flask', 'Tailwind CSS'],
     },
     {
-      label: 'Tools',
-      skills: ['Git', 'GitHub'],
+      label: 'APIs & Data',
+      skills: ['GraphQL', 'RESTful APIs', 'PostgreSQL', 'MySQL', 'Redis'],
+    },
+    {
+      label: 'Infrastructure & Tools',
+      skills: ['Git', 'GitHub Actions', 'AWS (S3, EKS)', 'Kubernetes', 'Linux', 'Docker'],
     },
   ];
 
