@@ -3,10 +3,8 @@ services:
     build: .
     container_name: portfolio
     restart: unless-stopped
-    # No ports exposed to the host — only reachable inside the Docker network.
-    # In the Cloudflare Tunnel dashboard, set the service URL to: http://portfolio:3741
-    networks:
-      - internal
+    ports:
+      - "127.0.0.1:3741:3741"  # localhost only — not reachable from outside the machine
 
   cloudflared:
     image: cloudflare/cloudflared:latest
@@ -15,11 +13,6 @@ services:
     command: tunnel --no-autoupdate run
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
-    networks:
-      - internal
+    network_mode: "host"  # sees localhost:3741 on the host
     depends_on:
       - portfolio
-
-networks:
-  internal:
-    driver: bridge
