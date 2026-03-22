@@ -1,7 +1,6 @@
 <script>
   import { onMount } from 'svelte';
   import bugTracker from '../../assets/projectScreenshots/bug-tracker-screenshot2.png';
-  import key2glory from '../../assets/projectScreenshots/key2glory.jpg';
   import chesstopia from '../../assets/projectScreenshots/chesstopia.gif';
 
   const projects = [
@@ -24,7 +23,7 @@
     {
       name: 'Key2Glory',
       description: 'A typing speed test app with multiple modes — standard words, numbers, and special characters — featuring Auth0 authentication and stats tracking.',
-      image: key2glory,
+      image: null,
       repo: 'https://github.com/jacob-ferrell/key2glory-frontend',
       demo: 'https://key2glory.jacobferrell.net',
       tags: ['React', 'TypeScript', 'Java', 'Spring Boot', 'Auth0'],
@@ -52,7 +51,13 @@
         <article class="card {visible ? 'visible' : ''}" style="--delay: {i * 120}ms">
           <a href={project.demo} target="_blank" rel="noopener noreferrer" class="card-image-link">
             <div class="card-image">
-              <img src={project.image} alt="{project.name} screenshot" />
+              {#if project.image}
+                <img src={project.image} alt="{project.name} screenshot" />
+              {:else}
+                <div class="img-placeholder">
+                  <span>{project.name}</span>
+                </div>
+              {/if}
               <div class="image-overlay">
                 <span>View Demo</span>
               </div>
@@ -179,6 +184,19 @@
 
   .card:hover .card-image img {
     transform: scale(1.04);
+  }
+
+  .img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    border-bottom: 1px dashed var(--border);
   }
 
   .image-overlay {
