@@ -1,22 +1,74 @@
 <script>
   import { onMount } from 'svelte';
 
+  // Existing PNGs
+  import javaImg      from '../../assets/softwareLogos/java.png';
+  import jsImg        from '../../assets/softwareLogos/js.png';
+  import pythonImg    from '../../assets/softwareLogos/python.png';
+  import htmlImg      from '../../assets/softwareLogos/html.png';
+  import cssImg       from '../../assets/softwareLogos/css.png';
+  import springImg    from '../../assets/softwareLogos/spring.png';
+  import reactImg     from '../../assets/softwareLogos/react.png';
+  import nodeImg      from '../../assets/softwareLogos/node.png';
+  import expressImg   from '../../assets/softwareLogos/express.png';
+  import djangoImg    from '../../assets/softwareLogos/django.png';
+  import tailwindImg  from '../../assets/softwareLogos/tailwind.png';
+  import postgresImg  from '../../assets/softwareLogos/postgres.png';
+  import gitImg       from '../../assets/softwareLogos/git.png';
+  import githubImg    from '../../assets/softwareLogos/github.png';
+
+  // New SVGs
+  import graphqlImg   from '../../assets/softwareLogos/graphql-plain.svg';
+  import flaskImg     from '../../assets/softwareLogos/flask-original.svg';
+  import mysqlImg     from '../../assets/softwareLogos/mysql-original.svg';
+  import redisImg     from '../../assets/softwareLogos/redis-plain.svg';
+  import awsImg       from '../../assets/softwareLogos/aws.svg';
+  import k8sImg       from '../../assets/softwareLogos/kubernetes-plain.svg';
+  import dockerImg    from '../../assets/softwareLogos/docker-plain.svg';
+  import linuxImg     from '../../assets/softwareLogos/linux-original.svg';
+
   const skillGroups = [
     {
       label: 'Languages',
-      skills: ['Java', 'JavaScript', 'Python', 'HTML', 'CSS'],
+      skills: [
+        { name: 'Java',       icon: javaImg },
+        { name: 'JavaScript', icon: jsImg },
+        { name: 'Python',     icon: pythonImg },
+        { name: 'HTML',       icon: htmlImg },
+        { name: 'CSS',        icon: cssImg },
+      ],
     },
     {
       label: 'Frameworks & Libraries',
-      skills: ['Spring Boot', 'React', 'Node.js', 'Express.js', 'Django', 'Flask', 'Tailwind CSS'],
+      skills: [
+        { name: 'Spring Boot', icon: springImg },
+        { name: 'React',       icon: reactImg },
+        { name: 'Node.js',     icon: nodeImg },
+        { name: 'Express.js',  icon: expressImg,  invertOnLight: true },
+        { name: 'Django',      icon: djangoImg },
+        { name: 'Flask',       icon: flaskImg,    invertOnDark: true },
+        { name: 'Tailwind CSS',icon: tailwindImg },
+      ],
     },
     {
       label: 'APIs & Data',
-      skills: ['GraphQL', 'RESTful APIs', 'PostgreSQL', 'MySQL', 'Redis'],
+      skills: [
+        { name: 'GraphQL',     icon: graphqlImg },
+        { name: 'PostgreSQL',  icon: postgresImg },
+        { name: 'MySQL',       icon: mysqlImg },
+        { name: 'Redis',       icon: redisImg },
+      ],
     },
     {
       label: 'Infrastructure & Tools',
-      skills: ['Git', 'GitHub Actions', 'AWS (S3, EKS)', 'Kubernetes', 'Linux', 'Docker'],
+      skills: [
+        { name: 'Git',            icon: gitImg },
+        { name: 'GitHub Actions', icon: githubImg,  invertOnDark: true },
+        { name: 'AWS',            icon: awsImg },
+        { name: 'Kubernetes',     icon: k8sImg },
+        { name: 'Docker',         icon: dockerImg },
+        { name: 'Linux',          icon: linuxImg },
+      ],
     },
   ];
 
@@ -40,9 +92,16 @@
       {#each skillGroups as group, i}
         <div class="group" style="--delay: {i * 100}ms">
           <h3 class="group-label">{group.label}</h3>
-          <div class="pills">
+          <div class="skills-grid">
             {#each group.skills as skill}
-              <span class="pill">{skill}</span>
+              <div class="skill-item">
+                <img
+                  src={skill.icon}
+                  alt={skill.name}
+                  class="skill-icon{skill.invertOnLight ? ' invert-light' : ''}{skill.invertOnDark ? ' invert-dark' : ''}"
+                />
+                <span class="skill-name">{skill.name}</span>
+              </div>
             {/each}
           </div>
         </div>
@@ -89,7 +148,7 @@
   .groups {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.6s ease 0.15s, transform 0.6s ease 0.15s;
@@ -106,7 +165,6 @@
     border-radius: 12px;
     padding: 1.5rem;
     transition: border-color 0.2s;
-    animation-delay: var(--delay);
   }
 
   .group:hover {
@@ -114,34 +172,56 @@
   }
 
   .group-label {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--accent);
-    margin: 0 0 1rem;
+    margin: 0 0 1.1rem;
   }
 
-  .pills {
+  .skills-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.6rem;
   }
 
-  .pill {
+  .skill-item {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
     background: var(--pill-bg);
-    color: var(--text);
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 0.3rem 0.85rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    padding: 0.3rem 0.75rem 0.3rem 0.5rem;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: default;
   }
 
-  .pill:hover {
-    background: var(--accent);
-    color: #fff;
+  .skill-item:hover {
     border-color: var(--accent);
+    background: var(--accent-subtle);
+  }
+
+  .skill-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  :global([data-theme="light"]) .invert-light {
+    filter: invert(1);
+  }
+
+  :global([data-theme="dark"]) .invert-dark {
+    filter: invert(1) brightness(1.8);
+  }
+
+  .skill-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
   }
 </style>
