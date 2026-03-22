@@ -8,6 +8,10 @@
   <div class="hero-content">
     <h1 class="name">Jacob Ferrell</h1>
     <p class="title">Backend Software Engineer</p>
+    <p class="bio">
+      I build backend systems with Java and Spring Boot, with a focus on clean architecture and scalable APIs.
+      Currently at Daxwell, where I designed a GraphQL-based supply chain platform from the ground up.
+    </p>
     <div class="cta-row">
       <a
         href="https://docs.google.com/document/d/1EjZxIKgkSwgWMlyLXrC8quvW_wmdEaaPp8r1xO8JL68/export?format=pdf"
@@ -70,8 +74,15 @@
   .title {
     font-size: clamp(1.1rem, 3vw, 1.5rem);
     color: var(--text-muted);
-    margin: 0 0 2rem;
+    margin: 0 0 1.25rem;
     font-weight: 400;
+  }
+
+  .bio {
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0 0 2rem;
+    max-width: 500px;
   }
 
   .cta-row {
