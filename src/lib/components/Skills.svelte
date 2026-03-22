@@ -26,6 +26,9 @@
   import k8sImg       from '../../assets/softwareLogos/kubernetes-plain.svg';
   import dockerImg    from '../../assets/softwareLogos/docker-plain.svg';
   import linuxImg     from '../../assets/softwareLogos/linux-original.svg';
+  import mavenImg     from '../../assets/softwareLogos/maven-original.svg';
+  import gradleImg    from '../../assets/softwareLogos/gradle-original.svg';
+  import junitImg     from '../../assets/softwareLogos/junit-plain.svg';
 
   const skillGroups = [
     {
@@ -41,9 +44,11 @@
     {
       label: 'Frameworks & Libraries',
       skills: [
-        { name: 'Spring Boot', icon: springImg },
-        { name: 'Hibernate',   icon: hibernateImg },
-        { name: 'React',       icon: reactImg },
+        { name: 'Spring Boot',     icon: springImg },
+        { name: 'Spring Security', icon: springImg },
+        { name: 'Hibernate',       icon: hibernateImg },
+        { name: 'Lombok',          icon: null },
+        { name: 'React',           icon: reactImg },
         { name: 'Node.js',     icon: nodeImg },
         { name: 'Express.js',  icon: expressImg,  invertOnLight: true },
         { name: 'Django',      icon: djangoImg },
@@ -62,6 +67,10 @@
     {
       label: 'Infrastructure & Tools',
       skills: [
+        { name: 'Maven',          icon: mavenImg },
+        { name: 'Gradle',         icon: gradleImg },
+        { name: 'JUnit',          icon: junitImg },
+        { name: 'Mockito',        icon: null },
         { name: 'Git',            icon: gitImg },
         { name: 'GitHub Actions', icon: githubImg,  invertOnDark: true },
         { name: 'AWS',            icon: awsImg },
@@ -95,11 +104,13 @@
           <div class="skills-grid">
             {#each group.skills as skill}
               <div class="skill-item">
-                <img
-                  src={skill.icon}
-                  alt={skill.name}
-                  class="skill-icon{skill.invertOnLight ? ' invert-light' : ''}{skill.invertOnDark ? ' invert-dark' : ''}"
-                />
+                {#if skill.icon}
+                  <img
+                    src={skill.icon}
+                    alt={skill.name}
+                    class="skill-icon{skill.invertOnLight ? ' invert-light' : ''}{skill.invertOnDark ? ' invert-dark' : ''}"
+                  />
+                {/if}
                 <span class="skill-name">{skill.name}</span>
               </div>
             {/each}
@@ -193,7 +204,7 @@
     background: var(--pill-bg);
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 0.3rem 0.75rem 0.3rem 0.5rem;
+    padding: 0.3rem 0.75rem;
     transition: border-color 0.2s, background 0.2s;
     cursor: default;
   }
