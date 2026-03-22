@@ -5,14 +5,3 @@ services:
     restart: unless-stopped
     ports:
       - "127.0.0.1:3741:3741"  # localhost only — not reachable from outside the machine
-
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: cloudflared
-    restart: unless-stopped
-    command: tunnel --no-autoupdate run
-    environment:
-      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
-    network_mode: "host"  # sees localhost:3741 on the host
-    depends_on:
-      - portfolio
