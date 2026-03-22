@@ -3,7 +3,8 @@ services:
     build: .
     container_name: portfolio
     restart: unless-stopped
-    # No ports exposed to the host — only reachable inside the Docker network
+    # No ports exposed to the host — only reachable inside the Docker network.
+    # In the Cloudflare Tunnel dashboard, set the service URL to: http://portfolio:3741
     networks:
       - internal
 
