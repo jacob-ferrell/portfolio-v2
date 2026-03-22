@@ -3,5 +3,22 @@ services:
     build: .
     container_name: portfolio
     restart: unless-stopped
-    ports:
-      - "80:80"
+    # No ports exposed to the host — only reachable inside the Docker network
+    networks:
+      - internal
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    networks:
+      - internal
+    depends_on:
+      - portfolio
+
+networks:
+  internal:
+    driver: bridge
