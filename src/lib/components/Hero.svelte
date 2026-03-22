@@ -9,8 +9,9 @@
     <h1 class="name">Jacob Ferrell</h1>
     <p class="title">Backend Software Engineer</p>
     <p class="bio">
-      I build backend systems with Java and Spring Boot, with a focus on clean architecture and scalable APIs.
-      Currently at Daxwell, where I designed a GraphQL-based supply chain platform from the ground up.
+      Software engineer with experience spanning backend architecture, distributed systems, and production DevOps.
+      At Daxwell, I've taken core ownership of a supply chain platform — designing the API layer, building cross-cutting
+      backend systems, and managing the CI/CD pipelines and Kubernetes infrastructure that keep it running.
     </p>
     <div class="cta-row">
       <a
