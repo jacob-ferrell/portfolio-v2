@@ -10,11 +10,12 @@ COPY . .
 RUN npm run build
 
 # ── Stage 2: serve ──────────────────────────────────────────────────────────
-FROM nginx:alpine
+FROM node:18-alpine
 
-COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+RUN npm install -g serve
+
+COPY --from=builder /app/dist /app/dist
 
 EXPOSE 3741
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["serve", "-l", "3741", "/app/dist"]
