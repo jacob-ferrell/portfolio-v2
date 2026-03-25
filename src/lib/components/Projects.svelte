@@ -18,7 +18,7 @@
       description: 'A full-featured project management app for tracking bugs and issues, built with the MERN stack.',
       image: bugTracker,
       repo: 'https://github.com/jacob-ferrell/bug-tracker',
-      demo: 'https://bug-tracker-rcf6.onrender.com/',
+      demo: 'https://bugtracker.jacobferrell.net/',
       tags: ['MongoDB', 'Express', 'React', 'Node.js'],
     },
     {
