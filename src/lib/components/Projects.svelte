@@ -7,7 +7,7 @@
   const projects = [
     {
       name: 'Chesstopia',
-      description: 'An online chess game featuring real-time multiplayer play, built with React, Java/Spring, and PostgreSQL.',
+      description: 'An online chess game featuring real-time multiplayer play via websockets, built with React, Java/Spring, and PostgreSQL.',
       image: chesstopia,
       repo: 'https://github.com/jacob-ferrell/chesstopia',
       demo: 'https://chess.jacobferrell.net',
