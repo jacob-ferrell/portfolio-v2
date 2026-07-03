@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+  import { reveal } from '../actions/reveal.js';
   import bugTracker from '../../assets/projectScreenshots/bug-tracker-screenshot2.png';
   import key2glory from '../../assets/projectScreenshots/key2glory.png';
   import chesstopia from '../../assets/projectScreenshots/chesstopia.gif';
@@ -31,36 +31,45 @@
     },
   ];
 
-  let visible = false;
-  let sectionEl;
-
-  onMount(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) visible = true; },
-      { threshold: 0.1 }
-    );
-    observer.observe(sectionEl);
-    return () => observer.disconnect();
-  });
+  // Track pointer position per-card for the spotlight glow
+  function spotlight(e) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+    e.currentTarget.style.setProperty('--my', `${e.clientY - rect.top}px`);
+  }
 </script>
 
-<section id="projects" bind:this={sectionEl}>
+<section id="projects">
   <div class="section-inner">
-    <h2 class="section-title {visible ? 'visible' : ''}">Projects</h2>
+    <h2 class="section-title" use:reveal>
+      <span class="title-index">03</span>
+      Projects
+    </h2>
     <div class="cards">
       {#each projects as project, i}
-        <article class="card {visible ? 'visible' : ''}" style="--delay: {i * 120}ms">
-          <a href={project.demo} target="_blank" rel="noopener noreferrer" class="card-image-link">
+        <article
+          class="card"
+          use:reveal={{ delay: 100 + i * 130 }}
+          on:pointermove={spotlight}
+        >
+          <div class="spotlight" aria-hidden="true" />
+          <a href={project.demo} target="_blank" rel="noopener noreferrer" class="card-image-link" aria-label="{project.name} live demo">
             <div class="card-image">
               {#if project.image}
-                <img src={project.image} alt="{project.name} screenshot" />
+                <img src={project.image} alt="{project.name} screenshot" loading="lazy" />
               {:else}
                 <div class="img-placeholder">
                   <span>{project.name}</span>
                 </div>
               {/if}
               <div class="image-overlay">
-                <span>View Demo</span>
+                <span class="overlay-pill">
+                  View Demo
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="7" y1="17" x2="17" y2="7"/>
+                    <polyline points="7 7 17 7 17 17"/>
+                  </svg>
+                </span>
               </div>
             </div>
           </a>
@@ -104,33 +113,8 @@
   }
 
   .section-inner {
-    max-width: 900px;
+    max-width: 960px;
     margin: 0 auto;
-  }
-
-  .section-title {
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
-    font-weight: 800;
-    color: var(--text);
-    margin: 0 0 2.5rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  .section-title.visible {
-    opacity: 1;
-    transform: none;
-  }
-
-  .section-title::after {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 3px;
-    background: var(--accent);
-    margin-top: 0.5rem;
-    border-radius: 2px;
   }
 
   .cards {
@@ -140,24 +124,37 @@
   }
 
   .card {
+    position: relative;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.5s ease var(--delay), transform 0.5s ease var(--delay), border-color 0.2s;
-  }
-
-  .card.visible {
-    opacity: 1;
-    transform: none;
+    transition:
+      border-color 0.25s,
+      box-shadow 0.25s,
+      transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .card:hover {
     border-color: var(--accent);
+    transform: translateY(-6px);
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  .spotlight {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), var(--accent-glow-soft), transparent 65%);
+    transition: opacity 0.3s;
+    z-index: 1;
+  }
+
+  .card:hover .spotlight {
+    opacity: 1;
   }
 
   .card-image-link {
@@ -173,6 +170,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    border-bottom: 1px solid var(--border);
   }
 
   .card-image img {
@@ -180,11 +178,11 @@
     height: 100%;
     object-fit: contain;
     display: block;
-    transition: transform 0.4s ease;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .card:hover .card-image img {
-    transform: scale(1.04);
+    transform: scale(1.05);
   }
 
   .img-placeholder {
@@ -197,29 +195,45 @@
     font-size: 1rem;
     font-weight: 600;
     letter-spacing: 0.05em;
-    border-bottom: 1px dashed var(--border);
   }
 
   .image-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.55);
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     transition: opacity 0.3s;
+  }
+
+  .overlay-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--accent);
     color: #fff;
     font-weight: 600;
-    font-size: 0.95rem;
-    letter-spacing: 0.04em;
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    transform: translateY(8px);
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .card:hover .image-overlay {
     opacity: 1;
   }
 
+  .card:hover .overlay-pill {
+    transform: translateY(0);
+  }
+
   .card-body {
+    position: relative;
+    z-index: 2;
     padding: 1.25rem;
     flex: 1;
     display: flex;

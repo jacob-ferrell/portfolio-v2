@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+  import { reveal } from '../actions/reveal.js';
 
   // Existing PNGs
   import javaImg      from '../../assets/softwareLogos/java.png';
@@ -80,34 +80,26 @@
       ],
     },
   ];
-
-  let visible = false;
-  let sectionEl;
-
-  onMount(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) visible = true; },
-      { threshold: 0.15 }
-    );
-    observer.observe(sectionEl);
-    return () => observer.disconnect();
-  });
 </script>
 
-<section id="skills" bind:this={sectionEl}>
+<section id="skills">
   <div class="section-inner">
-    <h2 class="section-title {visible ? 'visible' : ''}">Skills</h2>
-    <div class="groups {visible ? 'visible' : ''}">
+    <h2 class="section-title" use:reveal>
+      <span class="title-index">02</span>
+      Skills
+    </h2>
+    <div class="groups">
       {#each skillGroups as group, i}
-        <div class="group" style="--delay: {i * 100}ms">
+        <div class="group" use:reveal={{ delay: 80 + i * 100 }}>
           <h3 class="group-label">{group.label}</h3>
           <div class="skills-grid">
-            {#each group.skills as skill}
-              <div class="skill-item">
+            {#each group.skills as skill, j}
+              <div class="skill-item" style="--pop-delay: {j * 35}ms">
                 {#if skill.icon}
                   <img
                     src={skill.icon}
-                    alt={skill.name}
+                    alt=""
+                    loading="lazy"
                     class="skill-icon{skill.invertOnLight ? ' invert-light' : ''}{skill.invertOnDark ? ' invert-dark' : ''}"
                   />
                 {/if}
@@ -127,59 +119,27 @@
   }
 
   .section-inner {
-    max-width: 900px;
+    max-width: 960px;
     margin: 0 auto;
-  }
-
-  .section-title {
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
-    font-weight: 800;
-    color: var(--text);
-    margin: 0 0 2.5rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  .section-title.visible {
-    opacity: 1;
-    transform: none;
-  }
-
-  .section-title::after {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 3px;
-    background: var(--accent);
-    margin-top: 0.5rem;
-    border-radius: 2px;
   }
 
   .groups {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease 0.15s, transform 0.6s ease 0.15s;
-  }
-
-  .groups.visible {
-    opacity: 1;
-    transform: none;
   }
 
   .group {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 1.5rem;
-    transition: border-color 0.2s;
+    transition: border-color 0.25s, box-shadow 0.25s;
   }
 
   .group:hover {
     border-color: var(--accent);
+    box-shadow: 0 8px 30px var(--accent-glow-soft);
   }
 
   .group-label {
@@ -204,14 +164,31 @@
     background: var(--pill-bg);
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 0.3rem 0.75rem;
-    transition: border-color 0.2s, background 0.2s;
+    padding: 0.35rem 0.8rem;
+    transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
     cursor: default;
+  }
+
+  /* Pills pop in with a stagger once their group has revealed */
+  :global(.group.reveal) .skill-item {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+
+  :global(.group.reveal.revealed) .skill-item {
+    opacity: 1;
+    transform: scale(1);
+    transition:
+      opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1) var(--pop-delay, 0ms),
+      transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) var(--pop-delay, 0ms),
+      border-color 0.2s, background 0.2s, box-shadow 0.2s;
   }
 
   .skill-item:hover {
     border-color: var(--accent);
     background: var(--accent-subtle);
+    transform: translateY(-3px) !important;
+    box-shadow: 0 6px 16px var(--accent-glow-soft);
   }
 
   .skill-icon {
@@ -234,5 +211,12 @@
     font-weight: 500;
     color: var(--text);
     white-space: nowrap;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.group.reveal) .skill-item {
+      opacity: 1;
+      transform: none;
+    }
   }
 </style>
