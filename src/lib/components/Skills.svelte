@@ -44,10 +44,13 @@
     {
       label: 'Frameworks & Libraries',
       skills: [
-        { name: 'Spring Boot',     icon: springImg },
-        { name: 'Spring Security', icon: springImg },
-        { name: 'Hibernate',       icon: hibernateImg },
-        { name: 'Lombok',          icon: null },
+        { name: 'Spring Boot',        icon: springImg },
+        { name: 'Spring Security',    icon: springImg },
+        { name: 'Spring for GraphQL', icon: springImg },
+        { name: 'Spring Data JPA',    icon: springImg },
+        { name: 'Hibernate',          icon: hibernateImg },
+        { name: 'Flyway',             icon: null },
+        { name: 'Testcontainers',     icon: null },
         { name: 'React',           icon: reactImg },
         { name: 'Node.js',     icon: nodeImg },
         { name: 'Express.js',  icon: expressImg,  invertOnLight: true },
