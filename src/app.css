@@ -1,11 +1,13 @@
 /* ── Google Fonts ── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 /* ── CSS Variables ── */
 :root {
   --accent: #e31b6d;
   --accent-hover: #c71460;
   --accent-subtle: rgba(227, 27, 109, 0.1);
+  --accent-glow: rgba(227, 27, 109, 0.25);
+  --accent-glow-soft: rgba(227, 27, 109, 0.12);
 }
 
 [data-theme="dark"] {
@@ -13,12 +15,14 @@
   --surface: #161b22;
   --surface-alt: #0d1117;
   --surface-hover: rgba(255, 255, 255, 0.06);
-  --nav-bg: rgba(13, 17, 23, 0.85);
+  --nav-bg: rgba(13, 17, 23, 0.8);
   --text: #e6edf3;
   --text-muted: #8b949e;
   --border: #30363d;
   --border-strong: #555;
   --pill-bg: #21262d;
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  --card-shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--accent), 0 0 24px var(--accent-glow-soft);
 }
 
 [data-theme="light"] {
@@ -26,12 +30,14 @@
   --surface: #ffffff;
   --surface-alt: #f6f8fa;
   --surface-hover: rgba(0, 0, 0, 0.05);
-  --nav-bg: rgba(255, 255, 255, 0.85);
+  --nav-bg: rgba(255, 255, 255, 0.8);
   --text: #24292f;
   --text-muted: #57606a;
   --border: #d0d7de;
   --border-strong: #aaa;
   --pill-bg: #f6f8fa;
+  --shadow: 0 12px 40px rgba(36, 41, 47, 0.12);
+  --card-shadow-hover: 0 16px 40px rgba(36, 41, 47, 0.15), 0 0 0 1px var(--accent), 0 0 24px var(--accent-glow-soft);
 }
 
 /* ── Base ── */
@@ -55,6 +61,7 @@ body {
   transition: background 0.3s, color 0.3s;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 #app {
@@ -84,6 +91,57 @@ button {
   font-family: inherit;
 }
 
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ── Scroll reveal (used by the reveal action) ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Shared section shell ── */
+.section-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 3rem;
+}
+
+.section-title .title-index {
+  font-size: 0.55em;
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+  margin-left: 0.5rem;
+  align-self: center;
+}
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar {
   width: 6px;
@@ -97,4 +155,20 @@ button {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }

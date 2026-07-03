@@ -1,17 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
-
-  let visible = false;
-  let sectionEl;
-
-  onMount(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) visible = true; },
-      { threshold: 0.1 }
-    );
-    observer.observe(sectionEl);
-    return () => observer.disconnect();
-  });
+  import { reveal } from '../actions/reveal.js';
 
   const experience = [
     {
@@ -38,42 +26,51 @@
   ];
 </script>
 
-<section id="experience" bind:this={sectionEl}>
+<section id="experience">
   <div class="section-inner">
-    <h2 class="section-title {visible ? 'visible' : ''}">Experience</h2>
-    <div class="timeline {visible ? 'visible' : ''}">
+    <h2 class="section-title" use:reveal>
+      <span class="title-index">01</span>
+      Experience
+    </h2>
+    <div class="timeline">
       {#each experience as job, i}
-        <div class="entry" style="--delay: {i * 100}ms">
-          <div class="entry-header">
-            <div>
-              <h3 class="entry-role">{job.role}</h3>
-              <span class="entry-company">{job.company}</span>
+        <div class="entry" use:reveal={{ delay: 100 + i * 120 }}>
+          <span class="node" aria-hidden="true" />
+          <div class="entry-card">
+            <div class="entry-header">
+              <div>
+                <h3 class="entry-role">{job.role}</h3>
+                <span class="entry-company">{job.company}</span>
+              </div>
+              <span class="entry-period">{job.period}</span>
             </div>
-            <span class="entry-period">{job.period}</span>
+            <ul class="entry-bullets">
+              {#each job.bullets as bullet}
+                <li>{bullet}</li>
+              {/each}
+            </ul>
           </div>
-          <ul class="entry-bullets">
-            {#each job.bullets as bullet}
-              <li>{bullet}</li>
-            {/each}
-          </ul>
         </div>
       {/each}
 
-      <div class="entry edu-entry" style="--delay: {experience.length * 100}ms">
-        <div class="entry-header">
-          <div>
-            <h3 class="entry-role">Education</h3>
-          </div>
-        </div>
-        {#each education as edu}
-          <div class="edu-row">
+      <div class="entry" use:reveal={{ delay: 100 + experience.length * 120 }}>
+        <span class="node" aria-hidden="true" />
+        <div class="entry-card">
+          <div class="entry-header">
             <div>
-              <span class="edu-degree">{edu.degree}</span>
-              <span class="entry-company">{edu.institution}</span>
+              <h3 class="entry-role">Education</h3>
             </div>
-            <span class="entry-period">{edu.period}</span>
           </div>
-        {/each}
+          {#each education as edu}
+            <div class="edu-row">
+              <div>
+                <span class="edu-degree">{edu.degree}</span>
+                <span class="entry-company">{edu.institution}</span>
+              </div>
+              <span class="entry-period">{edu.period}</span>
+            </div>
+          {/each}
+        </div>
       </div>
     </div>
   </div>
@@ -86,59 +83,56 @@
   }
 
   .section-inner {
-    max-width: 900px;
+    max-width: 960px;
     margin: 0 auto;
   }
 
-  .section-title {
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
-    font-weight: 800;
-    color: var(--text);
-    margin: 0 0 2.5rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  .section-title.visible {
-    opacity: 1;
-    transform: none;
-  }
-
-  .section-title::after {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 3px;
-    background: var(--accent);
-    margin-top: 0.5rem;
-    border-radius: 2px;
-  }
-
   .timeline {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease 0.15s, transform 0.6s ease 0.15s;
+    gap: 2rem;
+    padding-left: 1.75rem;
   }
 
-  .timeline.visible {
-    opacity: 1;
-    transform: none;
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    border-radius: 1px;
+    background: linear-gradient(180deg, var(--accent), var(--border));
   }
 
   .entry {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.75rem;
-    transition: border-color 0.2s;
+    position: relative;
   }
 
-  .entry:hover {
+  .node {
+    position: absolute;
+    left: -1.75rem;
+    top: 1.9rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-subtle), 0 0 12px var(--accent-glow);
+  }
+
+  .entry-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+  }
+
+  .entry-card:hover {
     border-color: var(--accent);
+    box-shadow: 0 8px 30px var(--accent-glow-soft);
+    transform: translateY(-3px);
   }
 
   .entry-header {
@@ -151,7 +145,7 @@
   }
 
   .entry-role {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: var(--text);
     margin: 0 0 0.2rem;
@@ -178,20 +172,26 @@
 
   .entry-bullets {
     margin: 0;
-    padding: 0 0 0 1.1rem;
+    padding: 0;
+    list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.7rem;
   }
 
   .entry-bullets li {
+    position: relative;
+    padding-left: 1.25rem;
     color: var(--text-muted);
     font-size: 0.9rem;
     line-height: 1.65;
   }
 
-  .edu-entry .entry-header {
-    margin-bottom: 0.75rem;
+  .entry-bullets li::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
   }
 
   .edu-row {
@@ -208,5 +208,21 @@
     color: var(--text);
     font-size: 0.95rem;
     margin-bottom: 0.15rem;
+  }
+
+  @media (max-width: 640px) {
+    .timeline {
+      padding-left: 1.25rem;
+    }
+
+    .node {
+      left: -1.25rem;
+      width: 10px;
+      height: 10px;
+    }
+
+    .entry-card {
+      padding: 1.25rem;
+    }
   }
 </style>
