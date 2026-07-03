@@ -3,8 +3,19 @@
   import bugTracker from '../../assets/projectScreenshots/bug-tracker-screenshot2.png';
   import key2glory from '../../assets/projectScreenshots/key2glory.png';
   import chesstopia from '../../assets/projectScreenshots/chesstopia.gif';
+  import marketDataFeed from '../../assets/projectScreenshots/market-data-feed.svg';
 
   const projects = [
+    {
+      name: 'Market Data Feed',
+      description:
+        'A lock-free C++ processor for a simulated market data stream — maintains a per-instrument order book and publishes best-bid/ask snapshots through hand-written SPSC ring buffers. 330 ns p99 processing latency at ~4.9M msg/s across 1000 instruments, with zero hot-path allocation. TSan/ASan clean.',
+      image: marketDataFeed,
+      chart: true,
+      repo: 'https://github.com/jacob-ferrell/market-data-feed',
+      metrics: ['330 ns p99', '4.9M msg/s', 'TSan/ASan clean'],
+      tags: ['C++', 'Lock-free', 'Concurrency', 'Systems'],
+    },
     {
       name: 'Chesstopia',
       description: 'An online chess game featuring real-time multiplayer play via websockets, built with React, Java/Spring, and PostgreSQL.',
@@ -53,10 +64,10 @@
           on:pointermove={spotlight}
         >
           <div class="spotlight" aria-hidden="true" />
-          <a href={project.demo} target="_blank" rel="noopener noreferrer" class="card-image-link" aria-label="{project.name} live demo">
-            <div class="card-image">
+          <a href={project.demo || project.repo} target="_blank" rel="noopener noreferrer" class="card-image-link" aria-label="{project.name} {project.demo ? 'live demo' : 'source code'}">
+            <div class="card-image" class:chart={project.chart}>
               {#if project.image}
-                <img src={project.image} alt="{project.name} screenshot" loading="lazy" />
+                <img src={project.image} alt="{project.name} {project.chart ? 'latency chart' : 'screenshot'}" loading="lazy" />
               {:else}
                 <div class="img-placeholder">
                   <span>{project.name}</span>
@@ -64,7 +75,7 @@
               {/if}
               <div class="image-overlay">
                 <span class="overlay-pill">
-                  View Demo
+                  {project.demo ? 'View Demo' : 'View Code'}
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="7" y1="17" x2="17" y2="7"/>
                     <polyline points="7 7 17 7 17 17"/>
@@ -80,8 +91,15 @@
               {/each}
             </div>
             <h3 class="card-title">
-              <a href={project.demo} target="_blank" rel="noopener noreferrer">{project.name}</a>
+              <a href={project.demo || project.repo} target="_blank" rel="noopener noreferrer">{project.name}</a>
             </h3>
+            {#if project.metrics}
+              <div class="card-metrics">
+                {#each project.metrics as metric}
+                  <span class="metric">{metric}</span>
+                {/each}
+              </div>
+            {/if}
             <p class="card-desc">{project.description}</p>
             <div class="card-links">
               <a href={project.repo} target="_blank" rel="noopener noreferrer" class="card-link">
@@ -90,14 +108,16 @@
                 </svg>
                 GitHub
               </a>
-              <a href={project.demo} target="_blank" rel="noopener noreferrer" class="card-link">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                  <polyline points="15 3 21 3 21 9"/>
-                  <line x1="10" y1="14" x2="21" y2="3"/>
-                </svg>
-                Live Demo
-              </a>
+              {#if project.demo}
+                <a href={project.demo} target="_blank" rel="noopener noreferrer" class="card-link">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15 3 21 3 21 9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
+                  Live Demo
+                </a>
+              {/if}
             </div>
           </div>
         </article>
@@ -179,6 +199,16 @@
     object-fit: contain;
     display: block;
     transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Charts render with dark text on transparency; a white panel keeps them
+     legible in both light and dark themes. */
+  .card-image.chart {
+    background: #ffffff;
+  }
+
+  .card-image.chart img {
+    padding: 0.85rem;
   }
 
   .card:hover .card-image img {
@@ -272,6 +302,23 @@
 
   .card-title a:hover {
     color: var(--accent);
+  }
+
+  .card-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .metric {
+    font-size: 0.74rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
   }
 
   .card-desc {
