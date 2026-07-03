@@ -64,9 +64,9 @@
       I build <span class="typed">{typed}</span><span class="caret" aria-hidden="true" />
     </p>
     <p class="bio" style="--stagger: 4">
-      At Daxwell, I architected a supply chain management platform from the ground up — delivering a
-      schema-first GraphQL API, cross-cutting backend systems, and the AWS/Kubernetes infrastructure
-      powering it in production.
+      I design and build production backend systems end to end — from data modeling and API design
+      to deployment and cloud infrastructure. I care about clean architecture, scalability, and
+      shipping software that holds up in the real world.
     </p>
     <div class="cta-row" style="--stagger: 5">
       <a
